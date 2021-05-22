@@ -1,0 +1,41 @@
+pseudo code for projecting trajectory of a shot put
+
+objects:
+shotPut: holds data for the current state of the shot put based on time
+time elapsed, angle of release, release force(constant), current velocity,
+acceleration(calculated using 2 sec intervals)
+
+
+list of functions:
+plotGraph(): accept list of coordinates, plots and shows them.
+
+updateState(): updates the state of the shotPut based on the time elapsed
+
+calcDrag(): calculates drag based on the current velocity
+
+generateCoordinates(): generates the position of the shotPut based
+on the state of the shot put
+a = F/m (by drag)
+a * t = change in vel
+average vel = currentVelocity += (change in vel / 2)
+d = average vel * t
+rise = d * sin(releaseAngle)
+run = d * cos(releaseAngle)
+
+y += rise
+x += run
+
+
+main(): executes entire program using above functions, looping them by
+increasing the elapsedTime value by 0.5s each loop
+
+---------------------------------------------------------------------------
+def main():
+iterate through angles 0(upright) through 90
+create an instance of shotPut each time
+add each instance into a list
+
+iterating through each shotput:
+check if shotput has reached the ground yet
+if still in air:
+increase time value in 0.5 second intervals
