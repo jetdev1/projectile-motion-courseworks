@@ -114,3 +114,5 @@ def main():
 
     #displays all graphs that have been plotted
     plt.show()
+
+main()
