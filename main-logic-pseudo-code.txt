@@ -1,0 +1,13 @@
+start loop with the current velocity
+
+calculate drag on the y axis based on current y velocity
+calculate deceleration caused by drag
+calculate and update new y velocity (solely for the calculation of drag of the next loop)
+
+calculate drag on the x axis based on the current x velocity
+calculate deceleration caused by drag
+calculate and update new x velocity (solely for the calculation of drag of the next loop)
+
+calculate displacement on both axes based on acceleration inclusive of drag
+update coordinates of the shotPut
+add new coordinates into list of coordinates to be plotted
