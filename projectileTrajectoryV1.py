@@ -21,7 +21,7 @@ class shotPut:
         self.radius = 0.065
 
         #take drag coefficient of shot as 0.5
-        self.dragCoeff = 0.5
+        self.dragCoeff = 0.07
 
         #take the density of air at sea level at 15 degrees Celsius as 1.225kg/m^3
         self.airDensity = 1.225
@@ -59,7 +59,7 @@ class shotPut:
     #current velocity of the shot put
     def calcDragDecel(self, currentVel):
         #using Newton's drag and taking pi = 3.14159
-        self.drag = 0.5 * 0.5 * self.airDensity * 3.14159 * currentVel ** 2
+        self.drag = 0.5 * self.dragCoeff * self.airDensity * 3.14159 * currentVel ** 2
 
         #calculate the acceleration caused by drag based on F = ma
         self.dragAccel = - (self.drag / self.mass)
@@ -177,7 +177,7 @@ def main():
         plotGraph(shotput.xCoordinates, shotput.yCoordinates, shotput)
 
     #plot the ground
-    plotGraph([0, 10], [0, 0])
+    plotGraph([0, 17.5], [0, 0])
 
     #Add the ground to the legend
     angleList.append("ground")
