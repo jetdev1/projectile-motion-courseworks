@@ -89,11 +89,13 @@ class shotPut:
     #update the y coordinates of the shotPut
     def updateYCoordinates(self, displacement):
         self.y += displacement
+        #append the new coordinate into the list of coordinates
         self.yCoordinates.append(self.y)
 
     #update the x coordinates of the shotPut
     def updateXCoordinates(self, displacement):
         self.x += displacement
+        #append the new coordinate into the list of coordinates
         self.xCoordinates.append(self.x)
 
     def updateYvel(self, currentDragAccel, elapsedTime):
