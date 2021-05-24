@@ -116,21 +116,18 @@ def plotGraph(xCoordinates, yCoordinates, *args):
     plt.xlabel("horizontal distance travelled by projectile")
     plt.ylabel("height of projectile")
 
-    #displays all graphs that have been plotted
-    #plt.show()
-
 
 #main() houses core logic of the calculations
 def main():
 
     #time interval between each plot = 0.01s
-    timeInterval = 0.001
+    timeInterval = 0.00001
 
     #create a blank list of launch angles to be written to to create legend later
     angleList = []
 
     #create instances of shotPut of launch angles ranging from 1 to 89
-    for angle in range(30, 36, 1):
+    for angle in range(30, 36):
         shotput = shotPut(angle)
 
         #append the new angle into the list
@@ -159,6 +156,8 @@ def main():
 
             #update the Y coordinate of shotPut and append to list of coordinates
             shotput.updateYCoordinates(yDisplacement)
+
+            #display the y coordinate
             print(shotput.y, end="")
 
             #calculate the displacement of the shotPut on the X axis
@@ -166,6 +165,8 @@ def main():
 
             #update the X coordinate of shotPut and append to list of coordinates
             shotput.updateXCoordinates(xDisplacement)
+
+            #display the x coordinate
             print(shotput.x, end="")
 
             #update t value
@@ -188,4 +189,5 @@ def main():
     #displays all graphs that have been plotted
     plt.show()
 
+#call the main() function to start the program
 main()
