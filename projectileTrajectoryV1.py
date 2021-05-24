@@ -181,7 +181,13 @@ def main():
     plotGraph([0, 17.5], [0, 0])
 
     #Add the ground to the legend
-    angleList.append("ground")
+    angleList.append("Ground")
+
+    #plot start point
+    plotGraph([0, 0], [0, 5])
+
+    #Add the ground to the legend
+    angleList.append("Start")
 
     #Create the legend for the graphs
     plt.legend(angleList, loc="upper right")
