@@ -108,7 +108,7 @@ class shotPut:
 
 
 #the coordinates of the shot put can be fed into this function to plot out the graph
-def plotGraph(xCoordinates, yCoordinates):
+def plotGraph(xCoordinates, yCoordinates, *args):
     #plot the graph using all the coordinates calculated previously
     plt.plot(xCoordinates, yCoordinates)
 
@@ -124,11 +124,17 @@ def plotGraph(xCoordinates, yCoordinates):
 def main():
 
     #time interval between each plot = 0.01s
-    timeInterval = 0.01
+    timeInterval = 0.001
+
+    #create a blank list of launch angles to be written to to create legend later
+    angleList = []
 
     #create instances of shotPut of launch angles ranging from 1 to 89
-    for angle in range(45, 47):
+    for angle in range(30, 36, 1):
         shotput = shotPut(angle)
+
+        #append the new angle into the list
+        angleList.append(str(angle) + "°")
 
         ##INSERT LOGIC HERE
         #initialise time value
@@ -153,14 +159,14 @@ def main():
 
             #update the Y coordinate of shotPut and append to list of coordinates
             shotput.updateYCoordinates(yDisplacement)
-            print(shotput.y)
+            print(shotput.y, end="")
 
             #calculate the displacement of the shotPut on the X axis
             xDisplacement = shotput.calcXDisplacement(timeInterval, YDragDecel)
 
             #update the X coordinate of shotPut and append to list of coordinates
             shotput.updateXCoordinates(xDisplacement)
-            print(shotput.x)
+            print(shotput.x, end="")
 
             #update t value
             t += timeInterval
@@ -168,7 +174,16 @@ def main():
 
 
         #plot graph for this instance of shotPut
-        plotGraph(shotput.xCoordinates, shotput.yCoordinates)
+        plotGraph(shotput.xCoordinates, shotput.yCoordinates, shotput)
+
+    #plot the ground
+    plotGraph([0, 10], [0, 0])
+
+    #Add the ground to the legend
+    angleList.append("ground")
+
+    #Create the legend for the graphs
+    plt.legend(angleList, loc="upper right")
 
     #displays all graphs that have been plotted
     plt.show()
