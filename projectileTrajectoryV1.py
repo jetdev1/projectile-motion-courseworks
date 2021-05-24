@@ -127,7 +127,7 @@ def main():
     angleList = []
 
     #create instances of shotPut of launch angles ranging from 1 to 89
-    for angle in range(30, 36):
+    for angle in range(30, 46):
         shotput = shotPut(angle)
 
         #append the new angle into the list
