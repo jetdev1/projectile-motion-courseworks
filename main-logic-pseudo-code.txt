@@ -11,3 +11,5 @@ calculate and update new x velocity (solely for the calculation of drag of the n
 calculate displacement on both axes based on acceleration inclusive of drag
 update coordinates of the shotPut
 add new coordinates into list of coordinates to be plotted
+
+update time value and repeat loop

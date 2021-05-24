@@ -32,11 +32,11 @@ class shotPut:
 
         #calulate the verticle velocity of the shot at launch put using trigonometric ratios
         #math.sin accepts values only in radians
-        self.yVel = self.currentVel * math.sin(math.radians(self.releaseAngle))
+        self.yVel = self.currentVel * math.sin(math.radians(launchAngle))
 
         #calulate the horizontal velocity of the shot put at launch using trigonometric ratios
         #math.cos accepts values only in radians
-        self.xVel = self.currentVel * math.cos(math.radians(self.releaseAngle))
+        self.xVel = self.currentVel * math.cos(math.radians(launchAngle))
 
         #set the mass(kg) of the shot put
         self.mass = 7.26
@@ -59,7 +59,7 @@ class shotPut:
     #current velocity of the shot put
     def calcDragDecel(self, currentVel):
         #using Newton's drag and taking pi = 3.14159
-        self.drag = 0.5 * 0.5 * airDensity * 3.14159 * currentVel ** 2
+        self.drag = 0.5 * 0.5 * self.airDensity * 3.14159 * currentVel ** 2
 
         #calculate the acceleration caused by drag based on F = ma
         self.dragAccel = - (self.drag / self.mass)
@@ -74,7 +74,7 @@ class shotPut:
     #calculate displacement of shot put along y-axis
     def calcYDisplacement(self, elapsedTime, currentDragAccel):
         #calculate the verticle displacement of the shot put
-        self.yDisplacement = self.yVel * elapsedTime + ((self.gravityAccel + currentDragAccel) * t**2)/2
+        self.yDisplacement = self.yVel * elapsedTime + ((self.gravityAccel + currentDragAccel) * elapsedTime**2)/2
 
         return self.yDisplacement
 
@@ -82,7 +82,7 @@ class shotPut:
     #calculate displacement of shot put along y-axis
     def calcXDisplacement(self, elapsedTime, currentDragAccel):
         #calculate the verticle displacement of the shot put
-        self.xDisplacement = self.xVel * elapsedTime + ((currentDragAccel) * t**2)/2
+        self.xDisplacement = self.xVel * elapsedTime + ((currentDragAccel) * elapsedTime**2)/2
 
         return self.xDisplacement
 
@@ -117,17 +117,55 @@ def plotGraph(xCoordinates, yCoordinates):
     plt.ylabel("height of projectile")
 
     #displays all graphs that have been plotted
-    plt.show()
+    #plt.show()
 
 
 #main() houses core logic of the calculations
 def main():
 
+    #time interval between each plot = 0.01s
+    timeInterval = 0.01
+
     #create instances of shotPut of launch angles ranging from 1 to 89
-    for angle in range(1, 90):
+    for angle in range(45, 47):
         shotput = shotPut(angle)
 
         ##INSERT LOGIC HERE
+        #initialise time value
+        t = 0
+
+        #continue loop if shotput has not touched the ground yet
+        while shotput.y > 0:
+            #calculate the deceleration caused by drag along the y-axis
+            YDragDecel = shotput.calcDragDecel(shotput.yVel)
+
+            #update the yVel for the next calculation loop
+            shotput.updateYvel(YDragDecel, timeInterval)
+
+            #calculate the deceleration caused by drag along the y-axis
+            XDragDecel = shotput.calcDragDecel(shotput.xVel)
+
+            #update the xVel for the next calculation loop
+            shotput.updateXvel(XDragDecel, timeInterval)
+
+            #calculate the displacement of the shotPut on the Y axis
+            yDisplacement = shotput.calcYDisplacement(timeInterval, YDragDecel)
+
+            #update the Y coordinate of shotPut and append to list of coordinates
+            shotput.updateYCoordinates(yDisplacement)
+            print(shotput.y)
+
+            #calculate the displacement of the shotPut on the X axis
+            xDisplacement = shotput.calcXDisplacement(timeInterval, YDragDecel)
+
+            #update the X coordinate of shotPut and append to list of coordinates
+            shotput.updateXCoordinates(xDisplacement)
+            print(shotput.x)
+
+            #update t value
+            t += timeInterval
+
+
 
         #plot graph for this instance of shotPut
         plotGraph(shotput.xCoordinates, shotput.yCoordinates)
