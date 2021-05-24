@@ -120,14 +120,14 @@ def plotGraph(xCoordinates, yCoordinates, *args):
 #main() houses core logic of the calculations
 def main():
 
-    #time interval between each plot = 0.01s
-    timeInterval = 0.00001
+    #time interval between each plot = 0.00001s
+    timeInterval = 0.001
 
     #create a blank list of launch angles to be written to to create legend later
     angleList = []
 
     #create instances of shotPut of launch angles ranging from 1 to 89
-    for angle in range(30, 46):
+    for angle in range(35, 46):
         shotput = shotPut(angle)
 
         #append the new angle into the list
@@ -158,7 +158,7 @@ def main():
             shotput.updateYCoordinates(yDisplacement)
 
             #display the y coordinate
-            print(shotput.y, end="")
+            #print(shotput.y, end="")
 
             #calculate the displacement of the shotPut on the X axis
             xDisplacement = shotput.calcXDisplacement(timeInterval, YDragDecel)
@@ -167,7 +167,7 @@ def main():
             shotput.updateXCoordinates(xDisplacement)
 
             #display the x coordinate
-            print(shotput.x, end="")
+            #print(shotput.x, end="")
 
             #update t value
             t += timeInterval
@@ -184,7 +184,7 @@ def main():
     angleList.append("Ground")
 
     #plot start point
-    plotGraph([0, 0], [0, 5])
+    plotGraph([0, 0], [0, 7])
 
     #Add the ground to the legend
     angleList.append("Start")
