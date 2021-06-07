@@ -59,7 +59,7 @@ class shotPut:
     #current velocity of the shot put
     def calcDragDecel(self, currentVel):
         #using Newton's drag and taking pi = 3.14159
-        self.drag = 0.5 * self.dragCoeff * self.airDensity * 3.14159 * currentVel ** 2
+        self.drag = 0.5 * self.dragCoeff * self.airDensity * 3.14159 * self.radius * currentVel ** 2
 
         #calculate the acceleration caused by drag based on F = ma
         self.dragAccel = - (self.drag / self.mass)
@@ -109,8 +109,12 @@ class shotPut:
 
 #the coordinates of the shot put can be fed into this function to plot out the graph
 def plotGraph(xCoordinates, yCoordinates, *args):
-    #plot the graph using all the coordinates calculated previously
-    plt.plot(xCoordinates, yCoordinates)
+    try:
+        plt.plot(xCoordinates, yCoordinates, linestyle=args[0])
+
+    except:
+        #plot the graph using all the coordinates calculated previously
+        plt.plot(xCoordinates, yCoordinates)
 
     #label the coordinates of the graph
     plt.xlabel("horizontal distance travelled by projectile")
@@ -120,14 +124,15 @@ def plotGraph(xCoordinates, yCoordinates, *args):
 #main() houses core logic of the calculations
 def main():
 
-    #time interval between each plot = 0.00001s
-    timeInterval = 0.001
+    #time interval between each plot
+    timeInterval = 0.00001
 
     #create a blank list of launch angles to be written to to create legend later
     angleList = []
+    counter = 0
 
     #create instances of shotPut of launch angles ranging from 1 to 89
-    for angle in range(35, 46):
+    for angle in range(42, 43):
         shotput = shotPut(angle)
 
         #append the new angle into the list
@@ -171,26 +176,36 @@ def main():
 
             #update t value
             t += timeInterval
+            counter += 1
 
 
 
         #plot graph for this instance of shotPut
         plotGraph(shotput.xCoordinates, shotput.yCoordinates, shotput)
 
+    print(counter)
     #plot the ground
-    plotGraph([0, 17.5], [0, 0])
+    plotGraph([0, 21], [0, 0])
 
     #Add the ground to the legend
     angleList.append("Ground")
 
     #plot start point
-    plotGraph([0, 0], [0, 7])
+    plotGraph([0, 0], [0, 8])
 
     #Add the ground to the legend
     angleList.append("Start")
 
+    #manual dotted line for explanation
+    plotGraph([5, 5], [0,7], "dashed")
+    plotGraph([0.5, 0.5], [0,7], "dashed")
+    plotGraph([0.5, 5], [2.5384, 5.4203], "dashed")
+    plotGraph([0.5, 5], [2.5384, 2.5384], "dashed")
+    plt.plot(20.851933, 0, "ro")
+
     #Create the legend for the graphs
     plt.legend(angleList, loc="upper right")
+    plt.subplots_adjust(left=0.025, bottom=0.05, right=0.99, top=0.99, wspace=None, hspace=None)
 
     #displays all graphs that have been plotted
     plt.show()
