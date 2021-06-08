@@ -59,7 +59,7 @@ class shotPut:
     #current velocity of the shot put
     def calcDragDecel(self, currentVel):
         #using Newton's drag and taking pi = 3.14159
-        self.drag = 0.5 * self.dragCoeff * self.airDensity * 3.14159 * self.radius * currentVel ** 2
+        self.drag = 0.5 * self.dragCoeff * self.airDensity * 3.14159 * self.radius ** 2 * currentVel ** 2
 
         #calculate the acceleration caused by drag based on F = ma
         self.dragAccel = - (self.drag / self.mass)
@@ -132,7 +132,7 @@ def main():
     counter = 0
 
     #create instances of shotPut of launch angles ranging from 1 to 89
-    for angle in range(42, 43):
+    for angle in range(35, 46):
         shotput = shotPut(angle)
 
         #append the new angle into the list
@@ -185,7 +185,7 @@ def main():
 
     print(counter)
     #plot the ground
-    plotGraph([0, 21], [0, 0])
+    plotGraph([0, 22], [0, 0])
 
     #Add the ground to the legend
     angleList.append("Ground")
@@ -201,7 +201,7 @@ def main():
     plotGraph([0.5, 0.5], [0,7], "dashed")
     plotGraph([0.5, 5], [2.5384, 5.4203], "dashed")
     plotGraph([0.5, 5], [2.5384, 2.5384], "dashed")
-    plt.plot(20.851933, 0, "ro")
+    plt.plot(21.1621054228, 0, "ro")
 
     #Create the legend for the graphs
     plt.legend(angleList, loc="upper right")
