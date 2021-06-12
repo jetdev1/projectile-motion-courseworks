@@ -11,7 +11,7 @@ class shotPut:
     #variables and constants of the shot put will be defined here
     def __init__(self, launchAngle):
         #launch velocity = 13.72m/s
-        #value taken from Ryan Crouser's best throw in 2017 IAAF championshups
+        #value taken from Ryan Crouser's best throw in 2017 IAAF championships
         self.u = 13.72
 
         #take gravitational acceleration constant as -9.81m/s^2
