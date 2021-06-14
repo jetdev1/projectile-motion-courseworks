@@ -1,4 +1,5 @@
 # projectile-motion-courseworks
 Projectile trajectory simulation using Python
 
-this is a simple piece of code that simulates the trajectory of a shot put, taking into account air resistance
+This program simulates the trajectory of a shot put, either does not taking air resistance into account (math version) and takes air resistance into account (physics version).
+Based on kinematics and Newton's equation of drag
