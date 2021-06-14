@@ -181,7 +181,7 @@ def main():
 
 
         #plot graph for this instance of shotPut
-        plotGraph(shotput.xCoordinates, shotput.yCoordinates, shotput)
+        plotGraph(shotput.xCoordinates, shotput.yCoordinates)
 
     print(counter)
     #plot the ground
@@ -211,4 +211,4 @@ def main():
     plt.show()
 
 #call the main() function to start the program
-main()
+#main()

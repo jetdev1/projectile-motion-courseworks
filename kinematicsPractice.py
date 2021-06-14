@@ -1,69 +1,64 @@
 #this is practicing the equations for kinematics
 import math
 import matplotlib.pyplot as plt
-from labellines import *
+from projectileTrajectoryV1 import *
 
 #set the launch velocity and the gravity constant
 u = 13.72
 gravityAccel = -9.81
-#releaseAngle = 45
-
+#create blank lists for coordinates to plot trajectory
+xCoordinates = []
+yCoordinates = []
 
 def calcTrajectory(releaseAngle):
     #set the initial t value
     t = 0
-
-    #create blank lists for coordinates to plot trajectory
-    #this can be replaced with a numpy array later on
-    xCoordinates = []
-    yCoordinates = []
-
     #Set the starting coordinates of the projectile in meters
     y = 2.1
     x = 0
 
-    while not y < 0:
+    while y > 0:
         #calculate the displacement of the object in flight
         uy = u * math.sin(math.radians(releaseAngle))
-        #vy = 
+        #vy =
         sy = uy * t + (gravityAccel * t**2)/2
         y = 2.1 + sy
         if not y < 0:
-            print(y)
+            #print(y)
             yCoordinates.append(y)
 
             ux = u * math.cos(math.radians(releaseAngle))
             sx = ux * t
             x = 0 + sx
-            print(x)
+            #print(x)
             xCoordinates.append(x)
-
 
         #increase t value by 0.001s increments
         t += 0.0001
 
-    plotGraph(xCoordinates, yCoordinates)
 
-
-def plotGraph(xCoordinates, yCoordinates):
-    plt.plot(xCoordinates, yCoordinates)
-    plt.xlabel("horizontal distance travelled by projectile")
-    plt.ylabel("height of projectile")
-    labelLines(plt.gca().get_lines(),align=False,fontsize=14)
-    #plt.show()
-
-def calcDrag():
-    #take radius of shot put as 0.065m
-    radius = 0.065
-
-    #take the density of air at sea level at 15 degrees Celsius as 1.225kg/m^3
-    airDensity = 1.225
-
-    #take the drag coefficient of the shotput as 0.5
-    dragCoeff = 0.5
-
-
-
-for angle in range(1, 51, 5):
+angleList = []
+for angle in range(5, 89, 5):
     calcTrajectory(angle)
+    print(angle)
+    angleList.append(str(angle) + "°")
+
+plotGraph(xCoordinates, yCoordinates)
+
+#plot the ground
+plotGraph([0, 22], [0, 0])
+
+#Add the ground to the legend
+angleList.append("Ground")
+
+#plot start point
+plotGraph([0, 0], [0, 8])
+
+#Add the ground to the legend
+angleList.append("Start")
+print(angleList)
+#Create the legend for the graphs
+plt.legend(angleList, loc="upper right")
+plt.subplots_adjust(left=0.025, bottom=0.05, right=0.99, top=0.99, wspace=None, hspace=None)
+
 plt.show()
