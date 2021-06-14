@@ -1,6 +1,5 @@
 import math
 import matplotlib.pyplot as plt
-import numpy as np
 
 class ShotPut:
     def __init__(self, launchAngle):
