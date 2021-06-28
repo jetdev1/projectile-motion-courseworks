@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 
-class ShotPut:
+class Shot:
     def __init__(self, launchAngle):
         self.currentVel = 13.72
         self.currentVelY = self.currentVel * math.sin(math.radians(launchAngle))
@@ -13,100 +13,39 @@ class ShotPut:
         self.launchAngle = launchAngle
         self.y = 2.1
         self.x = 0
-        self.xCoordinates = []
-        self.yCoordinates = []
+        self.xCoordinates = [0]
+        self.yCoordinates = [2.1]
 
-    def calcTrajectory(self):
-        t = 0
-
-        while self.y > 0:
-            self.yDisplacement = self.currentVelY * t + (self.gravityAccel * t**2)/2
-            self.xDisplacement = self.currentVelX * t
-            #print(self.yDisplacement, self.xDisplacement)
-
-            self.y = 2.1 + self.yDisplacement
-            self.x = 0 + self.xDisplacement
-
-            #print(self.y, self.x)
-
-            self.yCoordinates.append(self.y)
-            self.xCoordinates.append(self.x)
-
-            t += 0.001
-
-    def calcXTrajectory(self, line, t):
+    def animate(self, time):
+        t = time / timeInterval
         self.xDisplacement = self.currentVelX * t
         self.x = 0 + self.xDisplacement
-        line.set_xdata(self.x)
-        return line
+        self.xCoordinates.append(self.x)
+        line.set_xdata(self.xCoordinates)
 
-    def calcYTrajectory(self, line, t):
-        self.yDisplacement = self.currentVelY * self.currentVelY * t + (self.gravityAccel * t**2)/2
+        self.yDisplacement = self.currentVelY * t + (self.gravityAccel * t**2)/2
         self.y = 2.1 + self.yDisplacement
-        line.set_ydata(self.y)
-        return line
-
-    def calcTrajectory2(self, t):
-        self.xDisplacement = self.currentVelX * t
-        self.x = 0 + self.xDisplacement
-        line.set_xdata(self.x)
-
-        self.yDisplacement = self.currentVelY * self.currentVelY * t + (self.gravityAccel * t**2)/2
-        self.y = 2.1 + self.yDisplacement
-        line.set_ydata(self.y)
-        return line
-
-
+        self.yCoordinates.append(self.y)
+        line.set_ydata(self.yCoordinates)
+        return line,
 
 def main():
     global line
-    angleList = []
-    #t = 0
-    timeInterval = 0.001
+    global x
+    global timeInterval
+    timeInterval = 500
     fig, ax = plt.subplots()
 
-    for angle in range(5, 89, 5):
-        shot = ShotPut(angle)
-        angleList.append(str(angle) + "°")
-        line = ax.plot(shot.x, shot.y)[0]
+    shot = Shot(42)
+    line = ax.plot(shot.xCoordinates, shot.yCoordinates)[0]
+    ax.set(xlim=(0, 30), ylim=(0, 12))
 
-        ani = animation.FuncAnimation(
-            fig, shot.calcTrajectory2, interval=20, blit=True, save_count=50
+    ani = animation.FuncAnimation(
+    fig, shot.animate, interval=1, blit=True, save_count=50
     )
-
     plt.show()
 
-'''
-def main():
-    angleList = []
-    for angle in range(5, 89, 5):
-        shot = ShotPut(angle)
-        shot.calcTrajectory()
-        angleList.append(str(angle) + "°")
-        plt.plot(shot.xCoordinates, shot.yCoordinates)
-        #print(shot.xCoordinates, "\n", shot.yCoordinates)
 
-    #plot the ground
-    plt.plot([0, 22], [0, 0])
-
-    #Add the ground to the legend
-    angleList.append("Ground")
-
-    #plot start point
-    plt.plot([0, 0], [0, 8])
-
-    #Add the ground to the legend
-    angleList.append("Start")
-
-    #Create the legend for the graphs
-    plt.legend(angleList, loc="upper right")
-    plt.subplots_adjust(left=0.038, bottom=0.05, right=0.99, top=0.99, wspace=None, hspace=None)
-
-    plt.xlabel("horizontal distance travelled by projectile")
-    plt.ylabel("height of projectile")
-
-    plt.show()
-'''
 
 
 if __name__=="__main__":
