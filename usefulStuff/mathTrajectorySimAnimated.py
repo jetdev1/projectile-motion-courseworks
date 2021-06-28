@@ -46,7 +46,7 @@ class ShotPut:
         line.set_ydata(self.y)
         return line
 
-    def calcTrajectory2(self, line, t):
+    def calcTrajectory2(self, t):
         self.xDisplacement = self.currentVelX * t
         self.x = 0 + self.xDisplacement
         line.set_xdata(self.x)
@@ -59,25 +59,19 @@ class ShotPut:
 
 
 def main():
+    global line
     angleList = []
     #t = 0
     timeInterval = 0.001
+    fig, ax = plt.subplots()
 
     for angle in range(5, 89, 5):
-        # Reset the t variable for the next run of the loop
-        t = 0
         shot = ShotPut(angle)
         angleList.append(str(angle) + "°")
+        line = ax.plot(shot.x, shot.y)[0]
 
-        while shot.y > 0:
-            fig, ax = plt.subplots()
-            line = ax.plot(shot.x, shot.y)[0]
-            shot.calcTrajectory2(line, t)
-
-            t += timeInterval
-
-    ani = animation.FuncAnimation(
-        fig, shot.calcTrajectory, interval=20, blit=True, save_count=50
+        ani = animation.FuncAnimation(
+            fig, shot.calcTrajectory2, interval=20, blit=True, save_count=50
     )
 
     plt.show()
