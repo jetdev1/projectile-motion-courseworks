@@ -210,5 +210,5 @@ def main():
     #displays all graphs that have been plotted
     plt.show()
 
-#call the main() function to start the program
-#main()
+if __name__=="__main__":
+    main()
