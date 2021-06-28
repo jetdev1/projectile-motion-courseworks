@@ -1,6 +1,7 @@
 #this approach will focus most of the calculations on vector quantities
 import math
 import matplotlib.pyplot as plt
+import time
 
 #create the object shotPut to hold all the constants
 #as well as the current state of the projectile
@@ -211,4 +212,8 @@ def main():
     plt.show()
 
 #call the main() function to start the program
-#main()
+if __name__ == "__main__":
+    startTime = time.time()
+    main()
+    endTime = time.time()
+    print(endTime - startTime)

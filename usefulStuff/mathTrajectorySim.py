@@ -1,5 +1,6 @@
 import math
 import matplotlib.pyplot as plt
+import time
 
 class ShotPut:
     def __init__(self, launchAngle):
@@ -20,12 +21,9 @@ class ShotPut:
         while self.y > 0:
             self.yDisplacement = self.currentVelY * t + (self.gravityAccel * t**2)/2
             self.xDisplacement = self.currentVelX * t
-            #print(self.yDisplacement, self.xDisplacement)
 
             self.y = 2.1 + self.yDisplacement
             self.x = 0 + self.xDisplacement
-
-            #print(self.y, self.x)
 
             self.yCoordinates.append(self.y)
             self.xCoordinates.append(self.x)
@@ -34,7 +32,7 @@ class ShotPut:
 
 def main():
     angleList = []
-    for angle in range(5, 89, 5):
+    for angle in range(35, 45, 1):
         shot = ShotPut(angle)
         shot.calcTrajectory()
         angleList.append(str(angle) + "°")
@@ -48,7 +46,12 @@ def main():
     angleList.append("Ground")
 
     #plot start point
-    plt.plot([0, 0], [0, 8])
+    plt.plot([0, 0], [0, 7])
+    plt.plot(21.18428, 0, "ro")
+    '''plt.plot([0.5, 5], [2.5384, 5.4203], linestyle="dashed")
+    plt.plot([0.5, 5], [2.5384, 2.5384], linestyle="dashed")
+    plt.plot([5, 5], [0,7], linestyle="dashed")
+    plt.plot([0.5, 0.5], [0,7], linestyle="dashed")'''
 
     #Add the ground to the legend
     angleList.append("Start")
@@ -61,5 +64,8 @@ def main():
     plt.ylabel("height of projectile")
 
     plt.show()
-
-main()
+if __name__ == "__main__":
+    startTime = time.time()
+    main()
+    endTime = time.time()
+    print(endTime - startTime)
