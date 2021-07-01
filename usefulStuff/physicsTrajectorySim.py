@@ -15,8 +15,8 @@ class shotPut:
         #value taken from Ryan Crouser's best throw in 2017 IAAF championships
         self.u = 13.72
 
-        #take gravitational acceleration constant as -9.81m/s^2
-        self.gravityAccel = -9.81
+        #take gravitational acceleration constant as -9.82m/s^2
+        self.gravityAccel = -9.82
 
         #take radius of men's shot put as 0.065m
         self.radius = 0.065
