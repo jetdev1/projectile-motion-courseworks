@@ -122,6 +122,22 @@ def plotGraph(xCoordinates, yCoordinates, *args):
     plt.ylabel("height of projectile")
 
 
+# outfile: CSV filename; headers: 1D list; plots: 2D list
+
+def writeCSV(outfile, headers, plots):
+    with open(outfile, 'w+') as outfile:
+        # write headers of csv
+        for header in headers:
+            outfile.write(str(header))
+        outfile.write('\n')
+
+        # insert data points
+        for plot in plots:
+            for field in plot:
+                outfile.write(str(field) + ',')
+
+
+
 #main() houses core logic of the calculations
 def main():
 
@@ -131,6 +147,7 @@ def main():
     #create a blank list of launch angles to be written to to create legend later
     angleList = []
     counter = 0
+    plots = []
 
     #create instances of shotPut of launch angles ranging from 1 to 89
     for angle in range(35, 46):
@@ -172,6 +189,9 @@ def main():
             #update the X coordinate of shotPut and append to list of coordinates
             shotput.updateXCoordinates(xDisplacement)
 
+            plot = [angle, shotput.x, shotput.y]
+            plots.append(plot)
+
             #display the x coordinate
             #print(shotput.x, end="")
 
@@ -183,6 +203,13 @@ def main():
 
         #plot graph for this instance of shotPut
         plotGraph(shotput.xCoordinates, shotput.yCoordinates)
+
+    # dump the data into a CSV file
+    outfile = r'shotputTrajectory.csv'
+    headers = ['angle of throw', 'x', 'y']
+    writeCSV(outfile, headers, plots)
+
+
 
     print(counter)
     #plot the ground
