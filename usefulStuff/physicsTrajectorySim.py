@@ -2,6 +2,8 @@
 import math
 import matplotlib.pyplot as plt
 import time
+import sys
+import traceback
 
 #create the object shotPut to hold all the constants
 #as well as the current state of the projectile
@@ -125,7 +127,7 @@ def plotGraph(xCoordinates, yCoordinates, *args):
 # outfile: CSV filename; headers: 1D list; plots: 2D list
 
 def writeCSV(outfile, headers, plots):
-    with open(outfile, 'w+') as outfile:
+    with open(outfile, 'w') as outfile:
         # write headers of csv
         for header in headers:
             outfile.write(str(header))
@@ -140,7 +142,7 @@ def writeCSV(outfile, headers, plots):
 
 #main() houses core logic of the calculations
 def main():
-
+    global endTime
     #time interval between each plot
     timeInterval = 0.00001
 
@@ -204,10 +206,20 @@ def main():
         #plot graph for this instance of shotPut
         plotGraph(shotput.xCoordinates, shotput.yCoordinates)
 
-    # dump the data into a CSV file
-    outfile = r'shotputTrajectory.csv'
-    headers = ['angle of throw', 'x', 'y']
-    writeCSV(outfile, headers, plots)
+    #try:
+    writeToCSV = sys.argv[1]
+    if writeToCSV == '-c':
+        # dump the data into a CSV file
+        outfile = r'C:\Users\limji\github\projectile-motion-courseworks\usefulStuff\shotputTrajectory.csv'
+        headers = ['angle of throw', 'x', 'y']
+        writeCSV(outfile, headers, plots)
+        print('CSV file completed')
+    else:
+        print('no CSV file created')
+
+    #except Exception as err:
+        print('no argument for CSV file given')
+        traceback.print_tb(err.__traceback__)
 
 
 
@@ -235,6 +247,7 @@ def main():
     plt.legend(angleList, loc="upper right")
     plt.subplots_adjust(left=0.025, bottom=0.05, right=0.99, top=0.99, wspace=None, hspace=None)
 
+    endTime = time.time()
     #displays all graphs that have been plotted
     plt.show()
 
@@ -242,5 +255,4 @@ def main():
 if __name__ == "__main__":
     startTime = time.time()
     main()
-    endTime = time.time()
     print(endTime - startTime)
