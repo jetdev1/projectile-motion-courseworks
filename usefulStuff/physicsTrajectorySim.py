@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 import time
 import sys
 import traceback
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 #create the object shotPut to hold all the constants
 #as well as the current state of the projectile
@@ -138,6 +142,41 @@ def writeCSV(outfile, headers, plots):
             for field in plot:
                 outfile.write(str(field) + ',')
 
+def init():
+    try:
+        flag = sys.argv[1]
+        if str(flag) == '-r':
+            try:
+                infile = str(sys.argv[2])
+                if not infile.endswith('.csv') or infile.endswith('.CSV'):
+                    print('The provided filename is not a CSV file.')
+                    exit()
+
+            except Exception as err:
+                traceback.print_tb(err.__traceback__)
+                print('No CSV file path provided!')
+
+            infileCSV = pd.read_csv(infile)
+            fig = make_subplots(rows=1, cols=1, subplot_titles=(
+            "Trajectory of a shot"
+            ))
+            fig.add_trace(go.Scattergl(
+            x = infileCSV['x'], y = infileCSV['y'],
+            name = "Trajectory of shot",
+            mode = 'lines'
+            ), row=1, col=1)
+            fig.update_xaxes(title_text="Horizontal distance", row=1, col=1)
+            fig.update_yaxes(title_text="Altitude", row=1, col=1)
+
+            global endTime
+            endTime = time.time()
+            fig.show()
+            return True
+
+    except Exception as err:
+        traceback.print_tb(err.__traceback__)
+        exit()
+
 
 
 #main() houses core logic of the calculations
@@ -215,7 +254,7 @@ def main():
             except Exception as err:
                 traceback.print_tb(err.__traceback__)
                 print("No filename provided for dumping data to CSV file.")
-                
+
             # dump the data into a CSV file
             headers = ['angle of throw', 'x', 'y']
             writeCSV(outfile, headers, plots)
@@ -259,5 +298,9 @@ def main():
 #call the main() function to start the program
 if __name__ == "__main__":
     startTime = time.time()
+    plotFromFile = init()
+    if plotFromFile:
+        print(endTime - startTime)
+        exit()
     main()
     print(endTime - startTime)
