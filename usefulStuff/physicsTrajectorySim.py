@@ -206,21 +206,26 @@ def main():
         #plot graph for this instance of shotPut
         plotGraph(shotput.xCoordinates, shotput.yCoordinates)
 
-    #try:
-    writeToCSV = sys.argv[1]
-    if writeToCSV == '-c':
-        # dump the data into a CSV file
-        outfile = r'C:\Users\limji\github\projectile-motion-courseworks\usefulStuff\shotputTrajectory.csv'
-        headers = ['angle of throw', 'x', 'y']
-        writeCSV(outfile, headers, plots)
-        print('CSV file completed')
-    else:
-        print('no CSV file created')
+    try:
+        writeToCSV = sys.argv[1]
+        if writeToCSV == '-c':
+            try:
+                outfile = str(sys.argv[2])
 
-    #except Exception as err:
-        print('no argument for CSV file given')
+            except Exception as err:
+                traceback.print_tb(err.__traceback__)
+                print("No filename provided for dumping data to CSV file.")
+                
+            # dump the data into a CSV file
+            headers = ['angle of throw', 'x', 'y']
+            writeCSV(outfile, headers, plots)
+            print('CSV file completed')
+        else:
+            print('no CSV file created')
+
+    except Exception as err:
+        print('No argument for CSV file given')
         traceback.print_tb(err.__traceback__)
-
 
 
     print(counter)
