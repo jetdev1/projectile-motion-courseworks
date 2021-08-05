@@ -8,7 +8,7 @@ class ShotPut:
         self.currentVelY = self.currentVel * math.sin(math.radians(launchAngle))
         self.currentVelX = self.currentVel * math.cos(math.radians(launchAngle))
         #print(self.currentVelX, self.currentVelY)
-        self.gravityAccel = -9.81
+        self.gravityAccel = -9.82
         self.launchAngle = launchAngle
         self.y = 2.1
         self.x = 0
@@ -64,6 +64,7 @@ def main():
     plt.ylabel("height of projectile")
 
     plt.show()
+
 if __name__ == "__main__":
     startTime = time.time()
     main()

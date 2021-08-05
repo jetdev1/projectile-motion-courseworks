@@ -2,6 +2,12 @@
 import math
 import matplotlib.pyplot as plt
 import time
+import sys
+import traceback
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 #create the object shotPut to hold all the constants
 #as well as the current state of the projectile
@@ -15,8 +21,8 @@ class shotPut:
         #value taken from Ryan Crouser's best throw in 2017 IAAF championships
         self.u = 13.72
 
-        #take gravitational acceleration constant as -9.81m/s^2
-        self.gravityAccel = -9.81
+        #take gravitational acceleration constant as -9.82m/s^2
+        self.gravityAccel = -9.82
 
         #take radius of men's shot put as 0.065m
         self.radius = 0.065
@@ -122,15 +128,67 @@ def plotGraph(xCoordinates, yCoordinates, *args):
     plt.ylabel("height of projectile")
 
 
+# outfile: CSV filename; headers: 1D list; plots: 2D list
+
+def writeCSV(outfile, headers, plots):
+    with open(outfile, 'w') as outfile:
+        # write headers of csv
+        for header in headers:
+            outfile.write(str(header))
+        outfile.write('\n')
+
+        # insert data points
+        for plot in plots:
+            for field in plot:
+                outfile.write(str(field) + ',')
+
+def init():
+    try:
+        flag = sys.argv[1]
+        if str(flag) == '-r':
+            try:
+                infile = str(sys.argv[2])
+                if not infile.endswith('.csv') or infile.endswith('.CSV'):
+                    print('The provided filename is not a CSV file.')
+                    exit()
+
+            except Exception as err:
+                traceback.print_tb(err.__traceback__)
+                print('No CSV file path provided!')
+
+            infileCSV = pd.read_csv(infile)
+            fig = make_subplots(rows=1, cols=1, subplot_titles=(
+            "Trajectory of a shot"
+            ))
+            fig.add_trace(go.Scattergl(
+            x = infileCSV['x'], y = infileCSV['y'],
+            name = "Trajectory of shot",
+            mode = 'lines'
+            ), row=1, col=1)
+            fig.update_xaxes(title_text="Horizontal distance", row=1, col=1)
+            fig.update_yaxes(title_text="Altitude", row=1, col=1)
+
+            global endTime
+            endTime = time.time()
+            fig.show()
+            return True
+
+    except Exception as err:
+        traceback.print_tb(err.__traceback__)
+        exit()
+
+
+
 #main() houses core logic of the calculations
 def main():
-
+    global endTime
     #time interval between each plot
     timeInterval = 0.00001
 
     #create a blank list of launch angles to be written to to create legend later
     angleList = []
     counter = 0
+    plots = []
 
     #create instances of shotPut of launch angles ranging from 1 to 89
     for angle in range(35, 46):
@@ -172,6 +230,9 @@ def main():
             #update the X coordinate of shotPut and append to list of coordinates
             shotput.updateXCoordinates(xDisplacement)
 
+            plot = [angle, shotput.x, shotput.y]
+            plots.append(plot)
+
             #display the x coordinate
             #print(shotput.x, end="")
 
@@ -183,6 +244,28 @@ def main():
 
         #plot graph for this instance of shotPut
         plotGraph(shotput.xCoordinates, shotput.yCoordinates)
+
+    try:
+        writeToCSV = sys.argv[1]
+        if writeToCSV == '-c':
+            try:
+                outfile = str(sys.argv[2])
+
+            except Exception as err:
+                traceback.print_tb(err.__traceback__)
+                print("No filename provided for dumping data to CSV file.")
+
+            # dump the data into a CSV file
+            headers = ['angle of throw', 'x', 'y']
+            writeCSV(outfile, headers, plots)
+            print('CSV file completed')
+        else:
+            print('no CSV file created')
+
+    except Exception as err:
+        print('No argument for CSV file given')
+        traceback.print_tb(err.__traceback__)
+
 
     print(counter)
     #plot the ground
@@ -208,12 +291,16 @@ def main():
     plt.legend(angleList, loc="upper right")
     plt.subplots_adjust(left=0.025, bottom=0.05, right=0.99, top=0.99, wspace=None, hspace=None)
 
+    endTime = time.time()
     #displays all graphs that have been plotted
     plt.show()
 
 #call the main() function to start the program
 if __name__ == "__main__":
     startTime = time.time()
+    plotFromFile = init()
+    if plotFromFile:
+        print(endTime - startTime)
+        exit()
     main()
-    endTime = time.time()
     print(endTime - startTime)
